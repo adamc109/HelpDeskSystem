@@ -5,6 +5,7 @@ using Infrastructure.Data;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.ConfigureApplicationCookie(opt =>
 
 //check if Iaccount service
 builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddMudServices();
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {

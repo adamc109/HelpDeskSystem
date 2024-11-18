@@ -1,0 +1,93 @@
+﻿@page "/login"
+@layout EmptyLayout
+@using System.ComponentModel.DataAnnotations
+@using Domain.Interface
+@using Microsoft.AspNetCore.Identity
+@using Domain.Entities
+
+
+
+@inject IAccountService accountService
+@inject NavigationManager nav
+
+@rendermode InteractiveServer
+
+<section>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg col-xl-5">
+                <img src="/assets/image/helpdesk.jpg" class="img-fluid" alt="Sample Image"/>
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                    <p class="lead fw-normal mb-0 me-3">Sign in with Email</p>
+                </div>
+                
+                    <Alert @ref="alert" />
+                    <EditForm Model="Input" method="post" OnValidSubmit="OnLogin" FormName="Login">
+                        <DataAnnotationsValidator />
+                        <hr />
+                        <div>
+                            <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" />
+                            <label for="email" class="form-label">Email</label>
+                            <ValidationMessage For="() => Input.Email" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText type="password" @bind-Value="Input.Password" class="form-control" aria-required="true" />
+                            <label for="password" class="form-label">Password</label>
+                            <ValidationMessage For="() => Input.Password" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputCheckbox @bind-Value="Input.Remember" />
+                            Remember me
+                        </div>
+                        <div>
+                            <button type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
+                        </div>
+                    </EditForm>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+
+
+
+@code {
+    private Alert alert;
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+
+
+    private async Task OnLogin()
+    {
+        var verify = await accountService.VerifyUser(Input.Email, Input.Password);
+        if (!verify.IsSuccess)
+        {
+            alert.ShowFailed(verify.ErrorMessage);
+            return;
+        }
+
+
+        nav.NavigateTo($"/processor/{ verify.Value}/{Input.Password}/{Input.Remember}");
+    }
+
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        public bool Remember { get; set; }
+    }
+}
