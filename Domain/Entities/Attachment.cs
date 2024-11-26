@@ -19,11 +19,11 @@ namespace Domain.Entities
 
         [ForeignKey(nameof(Ticket))]
 
-        public int TicketId { get; set; }
-        public Ticket ticket { get; set; }
+        public int? TicketId { get; set; }
+        public Ticket Ticket { get; set; }
 
-        [ForeignKey(nameof(Discussion))]
-        public int DiscussionId { get; set; }
+        [ForeignKey(nameof(Disscusion))]
+        public int? DiscussionId { get; set; }
         public Disscusion Disscusion { get; set; }
     }
 }

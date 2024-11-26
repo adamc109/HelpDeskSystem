@@ -18,7 +18,7 @@ namespace Infrastructure.Data
         DbSet<Ticket> Ticket { get; set; }
         DbSet<Product> Products { get; set; }
         DbSet<Priority> Priorities { get; set; }
-        DbSet<Disscusion> discussions { get; set; }
+        DbSet<Disscusion> Discussions { get; set; }
         DbSet<Category> Categories { get; set; }
         DbSet<Attachment> Attachments { get; set; }
 

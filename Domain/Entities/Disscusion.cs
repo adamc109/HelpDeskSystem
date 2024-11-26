@@ -11,13 +11,13 @@ namespace Domain.Entities
 {
     public class Disscusion
     {
-        public virtual ICollection<Attachment> Attachments { get; set; }
+        
 
         public Disscusion()
         {
             Attachments = new HashSet<Attachment>();
         }
-        
+
 
         [Key]
         public int DiscussionId { get; set; }
@@ -28,9 +28,12 @@ namespace Domain.Entities
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
+
         [ForeignKey(nameof(Ticket))]
-        public string TicketId { get; set; }
+        public int TicketId { get; set; }
         public Ticket Ticket { get; set; }
+              
+        public virtual ICollection<Attachment> Attachments { get; set; }
 
 
     }
